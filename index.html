@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <style>
+        *{
+            font-weight: 600;
+            margin: 0;
+            padding: 0;
+        }
+        .mainbanner{
+            width: 900px;
+            text-align: center;
+            background-color: rgb(227, 241, 245);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container mx-auto mainbanner p-2">
+            <h3>Vue TodoList</h3>
+            <div class="input-ground">
+                <span>代辦事項: </span>
+                <input type="text" placeholder="輸入代辦事項" v-model="newTodo">
+                <button class="btn-primary px-2" type="button" id="addbtn" @click="addItem">新增<i class="bi bi-file-earmark-plus"></i></button>
+            </div>
+
+            <div class="list mt-3">
+                <ul v-for="item in data" :key="item.id">
+                    <li style="list-style: none;">
+                        {{item.text}}
+                        <button type="button" class="btn-primary px-2" id="editbtn" @click="editItem(item)">編輯<i class="bi bi-arrow-clockwise"></i></button>
+                        <button type="button" class="btn-primary px-2" id="removebtn" @click="removeItem(item)">刪除<i class="bi bi-trash"></i></button>
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+            <span>目前共有: <span>{{data.length}}</span>筆代辦事項</span>
+            <hr>
+            <span>編輯事項: </span>
+            <input type="text" v-model="temp.text"><button type="button" class="btn-primary px-2" @click="doneEdit">編輯完成<i class="bi bi-upload"></i></button>
+
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script>
+        Vue.createApp({
+            data (){
+                return{
+                    newTodo:"",
+                    data:[],
+                    temp:{}
+                }
+            },
+            methods:{
+                addItem(){
+                    this.data.push({
+                        id:this.data.length +1,
+                        text:this.newTodo
+                    });
+
+                    this.newTodo = "";
+                },
+                removeItem(item){
+                    let index = this.data.findIndex(obj => obj.id === item.id);
+                    this.data.splice(index,1);
+                },
+                editItem(item){
+                    this.temp = {...item};
+                },
+                doneEdit(){
+                    let index = this.data.findIndex(obj => obj.id === this.temp.id);
+                    this.data[index] = this.temp;
+                    this.temp = "";
+                }
+
+            },
+            computed:{
+
+            },
+            mounted(){
+
+            }
+        }).mount("#app")
+    </script>
+</body>
+</html>
